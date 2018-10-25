@@ -8,8 +8,6 @@ class Materia {
 	const property estudiantesEnListaDeEspera = []
 	var property carreraEnLaQueFigura
 
-//	method cumplePrerrequsitosPara(alumno)
-
 	method agregarAlumnoInscripto(alumno) {
 		estudiantesInscriptos.add(alumno)
 	}
@@ -25,29 +23,31 @@ class Materia {
 	method agregarCorrelativas(materia) {
 		correlativas.add(materia)
 	}
+	
+	method perteneceA(carrera) = carreraEnLaQueFigura == carrera
 }
 
-class Objetos2 inherits Materia {
+class MateriaQueRequiereCorrelativas inherits Materia {
 
-	method cumplePrerrequsitosPara(alumno) = correlativas.all{ materia => alumno.aproboPreviamente(materia) }
-
-}
-
-class TrabajoFinal inherits Materia {
-
-	method cumplePrerrequsitosPara(alumno) = alumno.creditosAcumlados() >= 250
+	method cumplePrerrequsitosPara(alumno, carrera) = correlativas.all{ materia => alumno.aprobo(materia) }
 
 }
 
-class Objetos3 inherits Materia {
+class MateriaQueRequiere250Creditos inherits Materia {
 
-	method cumplePrerrequsitosPara(alumno) = alumno.aproboTodasLasDe(anioAlQuePertenece)
+	method cumplePrerrequsitosPara(alumno, carrera) = alumno.creditosAcumlados() >= 250
 
 }
 
-class EPYL inherits Materia {
+class MateriaQueRequiereAprobarAnioAnterior inherits Materia {
 
-	method cumplePrerrequsitosPara(alumno) = true
+	method cumplePrerrequsitosPara(alumno, carrera) = alumno.aproboTodasLasDe(anioAlQuePertenece)
+
+}
+
+class MateriaSinRequisitos inherits Materia {
+
+	method cumplePrerrequsitosPara(alumno, carrera) = true
 
 }
 

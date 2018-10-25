@@ -11,13 +11,15 @@ class Universidad {
 			alumno.aprobar(materia)
 		}
 	}
-	method inscribir(alumno, materia) {
-		if (materia.cupo() > materia.estudiantesInscriptos()){
+	method inscribir(alumno, materia, carrera) {
+		if (materia.cupo() > materia.estudiantesInscriptos().size() && alumno.puedeCursar(materia, carrera)){
 			alumno.inscribirse(materia)
 			materia.agregarAlumnoInscripto(alumno)
-		} else {
+		} else if (alumno.puedeCursar(materia, carrera)){
 			materia.agregearAlumnoAEspera(alumno)
-		}		
+		} else {
+			self.error("No cumple los requisitos para anotarse")
+		}
 	}
 	method desinscribir(alumno, materia) {
 		alumno.desinscribirse(materia)

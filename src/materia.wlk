@@ -1,14 +1,14 @@
 class Materia {
 
-	var property correlativas
+	const property correlativas = []
 	var property creditosQueOtorga
 	var property anioAlQuePertenece
-	var property estudiantesInscriptos
+	const property estudiantesInscriptos = []
 	var property cupo
-	var property estudiantesEnListaDeEspera
+	const property estudiantesEnListaDeEspera = []
 	var property carreraEnLaQueFigura
 
-	method cumplePrerrequsitosPara(alumno)
+//	method cumplePrerrequsitosPara(alumno)
 
 	method agregarAlumnoInscripto(alumno) {
 		estudiantesInscriptos.add(alumno)
@@ -22,30 +22,32 @@ class Materia {
 		estudiantesInscriptos.add(estudiantesEnListaDeEspera.first())
 		estudiantesEnListaDeEspera.remove(estudiantesEnListaDeEspera.first())
 	}
-
+	method agregarCorrelativas(materia) {
+		correlativas.add(materia)
+	}
 }
 
 class Objetos2 inherits Materia {
 
-	override method cumplePrerrequsitosPara(alumno) = correlativas.all{ materia => alumno.aproboPreviamente(materia) }
+	method cumplePrerrequsitosPara(alumno) = correlativas.all{ materia => alumno.aproboPreviamente(materia) }
 
 }
 
 class TrabajoFinal inherits Materia {
 
-	override method cumplePrerrequsitosPara(alumno) = alumno.creditosAcumlados() >= 250
+	method cumplePrerrequsitosPara(alumno) = alumno.creditosAcumlados() >= 250
 
 }
 
 class Objetos3 inherits Materia {
 
-	override method cumplePrerrequsitosPara(alumno) = alumno.aproboTodasLasDe(anioAlQuePertenece)
+	method cumplePrerrequsitosPara(alumno) = alumno.aproboTodasLasDe(anioAlQuePertenece)
 
 }
 
 class EPYL inherits Materia {
 
-	override method cumplePrerrequsitosPara(alumno) = true
+	method cumplePrerrequsitosPara(alumno) = true
 
 }
 

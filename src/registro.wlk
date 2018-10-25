@@ -1,9 +1,9 @@
-class Registro {
-	var property alumnos
+class Universidad {
+//	var property alumnos
 //	var property materias
 	var property carreras
 //	var property nota
-	var property registros
+	const property registros = []
 
 	method registrar(alumno, materia, nota) {
 		if (!registros.contains([ alumno, materia, nota ])) {
@@ -32,6 +32,6 @@ class Registro {
 	
 	method materiasALasQueEstaInscripto(alumno) = alumno.materiasInscripto()
 	
-	method materiasEnLasQueQuedoEnEspera(alumno) {}
+	method materiasEnLasQueQuedoEnEspera(alumno) = alumno.materiasEnListaDeEspera()
 }
 

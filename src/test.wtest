@@ -1,0 +1,30 @@
+import alumno.*
+import carrera.*
+import materia.*
+import registro.*
+
+
+describe "test" {
+	const mate1 = new Materia(creditosQueOtorga = 30, anioAlQuePertenece=1, cupo = 40, carreraEnLaQueFigura = 0)
+	const ingles = new Materia(creditosQueOtorga = 20, anioAlQuePertenece=2, cupo = 20, carreraEnLaQueFigura = 0)
+	const obj2 = new Materia(creditosQueOtorga = 30, anioAlQuePertenece=2, cupo = 40, carreraEnLaQueFigura = 0)
+	const epyl = new Materia(creditosQueOtorga = 30, anioAlQuePertenece=1, cupo = 40, carreraEnLaQueFigura = 0)
+	const tfinal = new Materia(creditosQueOtorga = 30, anioAlQuePertenece=2, cupo = 40, carreraEnLaQueFigura = 0)
+	const li = new Carrera(materias=[mate1, ingles])
+	const tpi = new Carrera(materias=[obj2, epyl, tfinal])
+	const unq = new Universidad(carreras=[tpi, li])
+	const juan = new Alumno(carrerasCursando= [tpi, li], materiasAprobadas = [epyl])	
+
+fixture {
+	mate1.carreraEnLaQueFigura(li)
+	ingles.carreraEnLaQueFigura(li)
+	obj2.carreraEnLaQueFigura(tpi)
+	epyl.carreraEnLaQueFigura(tpi)
+	tfinal.carreraEnLaQueFigura(tpi)
+}
+
+test "1" {
+	assert.notThat(juan.puedeCursar(epyl))
+}
+
+}

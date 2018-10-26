@@ -2,46 +2,60 @@ import alumno.*
 import carrera.*
 import materia.*
 import registro.*
-
+import universidad.*
 
 describe "test" {
-	const mate1 = new MateriaQueRequiere250Creditos(creditosQueOtorga = 30, anioAlQuePertenece=1, cupo = 40, carreraEnLaQueFigura = 0)
-	const ingles = new MateriaSinRequisitos(creditosQueOtorga = 20, anioAlQuePertenece=2, cupo = 2, carreraEnLaQueFigura = 0)
-	const obj2 = new MateriaQueRequiereCorrelativas(creditosQueOtorga = 30, anioAlQuePertenece=2, cupo = 40, carreraEnLaQueFigura = 0)
-	const obj3 = new MateriaQueRequiereAprobarAnioAnterior(creditosQueOtorga = 30, anioAlQuePertenece=3, cupo = 40, carreraEnLaQueFigura = 0)
-	const epyl = new MateriaSinRequisitos(creditosQueOtorga = 30, anioAlQuePertenece=1, cupo = 40, carreraEnLaQueFigura = 0)
-	const tfinal = new MateriaQueRequiere250Creditos(creditosQueOtorga = 30, anioAlQuePertenece=2, cupo = 40, carreraEnLaQueFigura = 0)
-	const li = new Carrera(materias=[mate1])
-	const tpi = new Carrera(materias=[obj2, epyl, tfinal, ingles])
-	const unq = new Universidad(carreras=[tpi, li])
-	const juan = new Alumno(carrerasCursando= [tpi, li], materiasAprobadas = [epyl])
-	const pedro = new Alumno(carrerasCursando= [tpi, li], materiasAprobadas = [])
-	const mario = new Alumno(carrerasCursando= [tpi], materiasAprobadas = [])	
 
-fixture {
-	mate1.carreraEnLaQueFigura(li)
-	ingles.carreraEnLaQueFigura(tpi)
-	obj3.carreraEnLaQueFigura(tpi)
-	epyl.carreraEnLaQueFigura(tpi)
-	tfinal.carreraEnLaQueFigura(tpi)
-	obj2.carreraEnLaQueFigura(tpi)
-	obj2.agregarCorrelativas(tfinal)
+	const mate1 = new MateriaQueRequiere250Creditos(creditosQueOtorga = 30, anioAlQuePertenece = 1, cupo = 40, carreraEnLaQueFigura = 0)
+	const ingles = new MateriaPorOrdenDeLlegada(creditosQueOtorga = 20, anioAlQuePertenece = 2, cupo = 2, carreraEnLaQueFigura = 0)
+	const obj2 = new MateriaQueRequiereCorrelativas(creditosQueOtorga = 30, anioAlQuePertenece = 2, cupo = 40, carreraEnLaQueFigura = 0)
+	const obj3 = new MateriaQueRequiereAprobarAnioAnterior(creditosQueOtorga = 30, anioAlQuePertenece = 3, cupo = 40, carreraEnLaQueFigura = 0)
+	const epyl = new MateriaSinRequisitos(creditosQueOtorga = 30, anioAlQuePertenece = 1, cupo = 40, carreraEnLaQueFigura = 0)
+	const tfinal = new MateriaQueRequiere250Creditos(creditosQueOtorga = 30, anioAlQuePertenece = 2, cupo = 40, carreraEnLaQueFigura = 0)
+	const li = new Carrera(materias = [ mate1 ])
+	const tpi = new Carrera(materias = [ obj2, epyl, tfinal, ingles ])
+	const juan = new Alumno(carrerasCursando = [ tpi, li ], materiasAprobadas = [ epyl ])
+	const yasabel = new Alumno(carrerasCursando = [ tpi], materiasAprobadas = [ ingles, obj2, tfinal ])
+	const pedro = new Alumno(carrerasCursando = [ tpi, li ], materiasAprobadas = [])
+	const mario = new Alumno(carrerasCursando = [ tpi ], materiasAprobadas = [])
+
+	fixture {
+		mate1.carreraEnLaQueFigura(li)
+		ingles.carreraEnLaQueFigura(tpi)
+		obj3.carreraEnLaQueFigura(tpi)
+		epyl.carreraEnLaQueFigura(tpi)
+		tfinal.carreraEnLaQueFigura(tpi)
+		obj2.carreraEnLaQueFigura(tpi)
+		ingles.agregarAlumnoAListaDeEspera(pedro)
+		ingles.agregarAlumnoAListaDeEspera(mario)
+		ingles.agregarAlumnoAListaDeEspera(juan)
+	}
+
+	test "juan no puede cursar epyl porque ya la curso" {
+		assert.notThat(juan.puedeCursar(epyl, tpi))
+	}
+
+	test "juan no puede cursar obj2 porque tiene una correlativa" {
+		obj2.agregarCorrelativas(tfinal)
+		assert.notThat(juan.puedeCursar(obj2, tpi))
+	}
+
+	test "juan SI puede cursar obj2 porque no tiene correlativas" {
+		assert.that(juan.puedeCursar(obj2, tpi))
+	}
+
+	test "juan no puede cursar ingles porque ya esta el cupo lleno" {
+		pedro.inscribirseEn(ingles, tpi)
+		mario.inscribirseEn(ingles, tpi)
+		juan.inscribirseEn(ingles, tpi)
+		assert.equals(2, ingles.estudiantesInscriptos().size())
+		assert.equals([ juan ], ingles.estudiantesEnListaDeEspera())
+		assert.equals([ingles], juan.materiasEnListaDeEspera())
+	}
+	
+	test "obj3 cumple prerrequisitos para yasabel porque aprobo todas las de 2do anio" {
+		assert.that(obj3.cumplePrerrequsitosPara(yasabel, tpi))
+	}
+
 }
 
-test "1" {
-	assert.notThat(juan.puedeCursar(epyl, tpi))
-}
-
-test "2" {
-	assert.notThat(juan.puedeCursar(obj2, tpi))
-}
-
-test "3" {
-	unq.inscribir(pedro, ingles, tpi)
-	unq.inscribir(mario, ingles, tpi)
-	unq.inscribir(juan, ingles, tpi)
-	assert.equals(2, ingles.estudiantesInscriptos().size())
-	assert.equals([juan], ingles.estudiantesEnListaDeEspera())
-}
-
-}

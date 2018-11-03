@@ -12,6 +12,7 @@ class Universidad {
 		}
 	}
 	method inscribir(alumno, materia, carrera) {
+		// TODO Código repetido, falta delegación.
 		if (materia.cupo() > materia.estudiantesInscriptos().size() && alumno.puedeCursar(materia, carrera)){
 			alumno.inscribirse(materia)
 			materia.agregarAlumnoInscripto(alumno)
@@ -21,6 +22,8 @@ class Universidad {
 			self.error("No cumple los requisitos para anotarse")
 		}
 	}
+	
+	// TODO De aquí para abajo todo es innecesario.
 	method desinscribir(alumno, materia) {
 		alumno.desinscribirse(materia)
 		materia.pasarDeListaDeEsperaAInscripto()

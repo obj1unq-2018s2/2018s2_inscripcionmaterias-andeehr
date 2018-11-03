@@ -6,6 +6,7 @@ import universidad.*
 
 describe "test" {
 
+	// TODO La cantidad de créditos debe ser variable por materia, 250 es un ejemplo.
 	const mate1 = new MateriaQueRequiere250Creditos(creditosQueOtorga = 30, anioAlQuePertenece = 1, cupo = 40, carreraEnLaQueFigura = 0)
 	const ingles = new MateriaPorOrdenDeLlegada(creditosQueOtorga = 20, anioAlQuePertenece = 2, cupo = 2, carreraEnLaQueFigura = 0)
 	const obj2 = new MateriaQueRequiereCorrelativas(creditosQueOtorga = 30, anioAlQuePertenece = 2, cupo = 40, carreraEnLaQueFigura = 0)

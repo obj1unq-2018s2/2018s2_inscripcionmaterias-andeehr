@@ -1,5 +1,5 @@
 class Universidad {
-
+	// TODO Esta clase es completamente innecesaria
 	var property carreras
 
 	method estudiantesInscriptosEn(materia) = materia.estudiantesInscriptos()

@@ -1,5 +1,5 @@
 class Materia {
-
+	// TODO El atributo correlativas corresponde a la subclase.
 	const property correlativas = []
 	var property creditosQueOtorga
 	var property anioAlQuePertenece
@@ -36,7 +36,7 @@ class Materia {
 }
 
 class MateriaQueRequiereCorrelativas inherits Materia {
-
+	// TODO Siendo que la materia pertenece a una carrera, el atributo carrera en este método y muchos otros podría reemplazarse por "carreraEnLaQueFigura"
 	method cumplePrerrequsitosPara(alumno, carrera) = correlativas.all{ materia => alumno.aprobo(materia) }
 
 }
@@ -59,9 +59,11 @@ class MateriaSinRequisitos inherits Materia {
 
 }
 
+// TODO De aquí hasta el final, mal usada la herencia => se espera poder combinar los criterios de inscripción con los criterios de ordenamiento de la lista de espera.
 class MateriaPorOrdenDeLlegada inherits MateriaSinRequisitos {
 
 	method inscribirSegunCriterio(alumno, carrera) {
+		// TODO Esta validación está repetida varias veces, evitalo.
 		if (self.hayCupo() && alumno.puedeCursar(self, carrera)) {
 			alumno.materiasInscripto().add(self)
 			self.agregarAlumnoInscripto(alumno)
@@ -76,6 +78,7 @@ class MateriaElitista inherits MateriaSinRequisitos {
 	method inscribirSegunCriterio(alumno, carrera) {
 		if (self.hayCupo() && alumno.puedeCursar(self, carrera) && alumno.tieneElMejorPromedioEn(self)) {
 			self.agregarAlumnoInscripto(alumno)
+			// TODO Este manejo de la lista de espera no coincide con lo que pide el enunciado.
 			self.eliminarDeListaDeEspera(alumno)
 		} else {
 			self.error("No cumple los requisitos para anotarse")
